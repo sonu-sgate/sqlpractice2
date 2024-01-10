@@ -1,6 +1,7 @@
 const express=require("express")
 const cors=require('cors')
 const { connection } = require("./connection/connection")
+const { userRouter } = require("./Routes/userRoute")
 const app=express()
 
 app.use(cors())
@@ -9,7 +10,7 @@ app.use(express.json())
 app.get('/',async(req,res)=>{
     res.status(200).json({msg:"welcome to practice session "})
 })
-
+app.use('/user',userRouter)
 app.listen(5000,async(req,res)=>{
 try{
     connection.connect((err)=>{
