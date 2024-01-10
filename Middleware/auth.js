@@ -1,12 +1,13 @@
 
 var jwt = require("jsonwebtoken");
 
-export const auth=async(req,res,next)=>{
+const auth=async(req,res,next)=>{
 const token=req.headers.authorization
-
+console.log(token)
+console.log("token",token.split(" ")[1])
 if(token){
 try{
-jwt.verify(token.split[" "][0], "practice", async (err, decoded)=> {
+jwt.verify(token.split(" ")[1], "practice", async (err, decoded)=> {
 if(decoded){
     req.body.email=decoded.userEmail
     req.body.userId=decoded.userId

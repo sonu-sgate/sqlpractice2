@@ -24,16 +24,19 @@ if(hash){
  connection.query(
    "INSERT INTO practice2 (name,email,password) VALUES (?,?,?)",
    [name, email, hash],
-   (err) => {
+   async(err) => {
      if (err) {
        console.log(err);
+       await connection.promise().rollback()
        res.status(500).json({ msg: "Internal Error is going on.." });
      } else {
+        await connection.promise().commit()
        res.status(201).json({ msg: "User Added Successfully" });
      }
    }
  );
 }else{
+    await connection.promise().rollback()
     res.status(500).json({msg:"Internal Error is going on.."})
 }
  });
@@ -67,14 +70,14 @@ try{
 const [data]=await connection.promise().query(query)
 console.log(data[0],'logged userdata')
 if(data.length>0){
-    console.log(data[0])
+    console.log(data[0].password,"password")
     const token = jwt.sign({ userId:data[0].id,userEmail:data[0].email }, "practice");
     bcrypt.compare(password, data[0].password, async (err, result)=> {
-        console.log(result,"result")
+        // console.log(result,"result")
     if(result){
 res.status(200).json({ msg: "login succesfully", status: true, userdata: data[0], token });
     }else{
-        res.status(400).json({msg:"Wrong password..!!"})
+   res.status(400).json({msg:"Wrong password..!!"})
     }
     });
 
