@@ -10,7 +10,7 @@ app.use(cors())
 app.use(express.json())
 
 app.get('/',async(req,res)=>{
-    res.status(200).json({msg:"welcome to practice session "})
+    res.status(200).json({msg:"welcome to practice session"})
 })
 app.use('/user',userRouter)
 app.use('/userpost',auth, accessRouter)
