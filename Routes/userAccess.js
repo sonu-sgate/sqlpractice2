@@ -5,8 +5,16 @@ const accessRouter=express.Router()
 
 accessRouter.get("/getdetails",async(req,res)=>{
     const {email}=req.body
-    const query=`SELECT name,email`
-    const [data]=await connection.promise().query("SELECT email,")
+    const {userId}=req.body
+    // const query=`SELECT name,email`
+    const [data]=await connection.promise().query(`SELECT * FROM practice2 INNER JOIN practice2posts ON practice2.id=practice2posts.userId WHERE userId=${userId}`)
+if(data.length>0){
+res.status(200).json({msg:"userdata",status:true,userdata:data[0]})
+}else{
+    res.status(400).json({msg:"No Data found..!!"})
+}
+// console.log(data,"data")
+
 })
 accessRouter.post('/adddetails',async(req,res)=>{
 const {mob}=req.body
@@ -22,6 +30,7 @@ if(data.length>0){
       const query = `INSERT INTO practice2posts (mob,userId) VALUES ('${mob}','${userId}')`;
      connection.query(query, (err) => {
         if (err) {
+            console.log(err)
           res.status(500).json({ msg: "Internal error is going on .." });
         } else {
           res.status(200).json({ msg: "Post Created Successfully" });
