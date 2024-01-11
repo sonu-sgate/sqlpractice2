@@ -18,6 +18,7 @@ app.listen(5000,async(req,res)=>{
 try{
     connection.connect((err)=>{
         if(err){
+            console.log(err)
             console.log("Not able to connect")
         }
         console.log("connected to mysql database")
